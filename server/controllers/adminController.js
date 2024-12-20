@@ -1,63 +1,60 @@
-import validator from "validator"
-import bycrypt from 'bcrypt'
-import {v2 as cloudinary} from "cloudinary"
-import doctorModel from "../models/doctormodel.js"
-//api for adding doctor
-const addDoctor = async () => {//it is an async function because it requires time to add doctor in database
+import validator from "validator";
+import bcrypt from "bcrypt";
+import { v2 as cloudinary } from "cloudinary";
+import doctorModel from "../models/doctormodel.js";
 
-    try{
-        const { name, email, password, speciality, degree, experience, about, fees, address } = req.body; //this data is sent using form data so we need middlware for that we use multer middleware for this
-
+// API for adding doctor
+const addDoctor = async (req, res) => { // Add req and res as parameters
+    try {
+        const { name, email, password, speciality, degree, experience, about, fees, address } = req.body; // Data sent using form data
         const imagefile = req.file;
 
-        // console.log({name,email, password, speciality, degree, experience, about, fees, address}, imagefile)
-        
-        if(!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address){
-            return res.json({success:false,message:"Missing Details"})
+        if (!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address) {
+            return res.json({ success: false, message: "Missing Details" });
         }
 
-        //vaildating email format
-        if(!validator.isEmail(email)){
-            return res.json({success:false,message:"Please enter a valid email"})
+        // Validate email format
+        if (!validator.isEmail(email)) {
+            return res.json({ success: false, message: "Please enter a valid email" });
         }
 
-        //validating strong pass
-        if(password.length < 8){
-            return res.json({success:false,message:"Please enter strong password"})
+        // Validate password strength
+        if (password.length < 8) {
+            return res.json({ success: false, message: "Please enter a strong password" });
         }
 
-        //hashing doc pass
-        const salt = await bycrypt.genSalt(10)
-        const hashedpass = await bycrypt.hash(password,salt)
+        // Hash the password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPass = await bcrypt.hash(password, salt);
 
-        //upload image to couldinary
-        const imageupload = await cloudinary.uploader.upload(imagefile.path, {resource_type:"image"})
-        const imageUrl = imageupload.secure_url
+        // Upload image to Cloudinary
+        const imageUpload = await cloudinary.uploader.upload(imagefile.path, { resource_type: "image" });
+        const imageUrl = imageUpload.secure_url;
 
-
-        //save data in database
+        // Save data to the database
         const doctorData = {
             name,
             email,
-            image:imageUrl,
-            password:hashedpass,
+            image: imageUrl,
+            password: hashedPass,
             speciality,
             degree,
             experience,
             about,
             fees,
-            address:JSON.parse(address),
-            date:Date.now()
-        }
+            address: JSON.parse(address), // Parse address if it's a JSON string
+            date: Date.now()
+        };
 
-        const newDoctor = new doctorModel(doctorData)
-        await newDoctor.save()
+        const newDoctor = new doctorModel(doctorData);
+        await newDoctor.save();
 
-        res.json({success:true,message:"Doctor added Succesfully"})
-    }catch (error){
-        console.log(error)
-        res.json({success:false,message: error.message})
+        console.log("Doctor added");
+        res.status(200).json({ success: true, message: "Doctor added successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: error.message });
     }
-}
+};
 
-export   {addDoctor}
+export { addDoctor };
