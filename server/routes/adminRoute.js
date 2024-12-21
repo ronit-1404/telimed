@@ -1,5 +1,5 @@
 import express from 'express'
-import { addDoctor } from '../controllers/adminController.js'
+import { addDoctor, loginAdmin  } from '../controllers/adminController.js'
 import {upload} from '../middlewares/multer.js'
 
 const adminRouter = express.Router()
@@ -9,5 +9,12 @@ const adminRouter = express.Router()
 adminRouter.post('/add-doctor',upload.single('image'),addDoctor)
 //at the above end point adddoctor function 
 
+
+//first we were getting error (cannot post /api/admin/login)
+//therefore we have created middleware which just console.log that if we have hit login endpoint or not and then execute next()
+adminRouter.post('/login',(req,res,next)=>{
+    console.log('login endpoint hit');
+    next();
+},loginAdmin)
 
 export default adminRouter
