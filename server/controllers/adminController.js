@@ -103,6 +103,7 @@ const loginAdmin = async (req, res) => {
         // Check if provided credentials match admin credentials from environment variables
         if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
             // Generate a token to keep the admin logged in
+            //this token will be set in req.header
             const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
             // Respond with success and the generated token
             return res.status(200).json({ success: true, token });
