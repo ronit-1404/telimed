@@ -3,6 +3,8 @@ import axios from "axios";
 import * as LoginContext from "./LoginContext"; // Styled components
 import "./style.css"; // Shared styles
 import { AdminContext } from "../context/AdminContext";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 
 function AdminLogin() {
     const [isAdminSignIn, toggleAdmin] = useState(true);
@@ -16,23 +18,20 @@ function AdminLogin() {
         console.log("Email:", email, "Password:", password);
 
         try {
-            //here email and password are send in req body
-            //await is used to wait for the promise returned by axios.post to resolve.
-            //This means the code execution will pause here until the POST request completes and a response is received.
+            // Here email and password are sent in the request body
             const { data } = await axios.post(`${backendUrl}/api/admin/login`, { email, password });
             if (data.success) {
                 console.log("Login successful, token:", data.token);
+                // Save token in local storage so that when we refresh the page, the admin can still be logged in
+                localStorage.setItem("aToken", data.token);
                 setatoken(data.token); // Save token in context
+                toast.success("Login successful!"); // Show success toast
             } else {
-                console.error("Login failed, response:", data);
+                toast.error(data.message); // Show error toast for invalid credentials
             }
-            //The frontend collects the admin's email and password through a form.
-            // The axios.post sends these credentials to the backend API.
-            // The backend checks the credentials and responds:
-            // On success: Returns a JSON object with admin details and an authentication token.
-            // On failure: Returns an error message (e.g., "Invalid credentials").
         } catch (error) {
             console.error("Error logging in:", error);
+            toast.error("An error occurred during login. Please try again."); // Show error toast for request failure
         }
     };
 
@@ -104,6 +103,7 @@ function AdminLogin() {
                     </LoginContext.Overlay>
                 </LoginContext.OverlayContainer>
             </LoginContext.Container>
+            <ToastContainer /> {/* Include ToastContainer for displaying notifications */}
         </LoginContext.PageWrapper>
     );
 }
