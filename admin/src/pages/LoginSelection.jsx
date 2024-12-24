@@ -4,7 +4,7 @@ function LoginSelection({ onSelect }) {
   return (
     <div className="selection-container">
       <h1>TeliMedicine Appointment Scheduling</h1>
-      <p>Login to Access the System</p>
+      <p>Login to handle you role</p>
       <div className="selection-options">
         <div className="card" onClick={() => onSelect('admin')}>
           <h3>Admin</h3>
