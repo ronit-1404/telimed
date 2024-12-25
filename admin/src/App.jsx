@@ -21,8 +21,8 @@ const App = () => {
         setSelectedRole(role);
     };
 
-    const {aToken} = useContext(AdminContext)
-    return aToken ?(
+    const {atoken} = useContext(AdminContext)
+    return atoken ?(
         <div className="bg-[#F8F9FD]">
             <ToastContainer />
             <Navbar />
@@ -42,8 +42,7 @@ const App = () => {
             {selectedRole === "" && <LoginSelection onSelect={handleRoleSelection} />}
             {selectedRole === "admin" && <AdminLogin />}
             {selectedRole === "doctor" && <DoctorLogin />}
-            <ToastContainer />
-            <Navbar />
+            
         </>
     )
 };

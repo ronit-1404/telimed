@@ -6,7 +6,7 @@ const AdminContextProvider = (props) => {
     const [atoken, setatoken] = useState(localStorage.getItem('aToken')?localStorage.getItem('aToken'):'');
 
     // Load backend URL from environment variable with a fallback
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
 
     console.log("Backend URL:", backendUrl);
 
