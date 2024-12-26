@@ -8,11 +8,15 @@ const Sidebar = () => {
   return (
     <div className="h-screen w-64 bg-gray-100 text-black fixed left-0 top-0 flex flex-col z-40">
       {atoken && (
-        <ul className="mt-4 space-y-4">
+        <ul className="mt-4 text-[#515151] space-y-4">
           <li>
             <NavLink
               to="/admin-dashboard"
-              className="flex items-center px-4 py-2 hover:bg-gray-200 rounded"
+              className={({ isActive }) =>
+                `flex items-center gap-3 py-3.5 px-3 md:px-6 cursor-pointer ${
+                  isActive ? 'bg-[#F2F3FF] border-r-4 border-blue-700' : ''
+                }`
+              }
             >
               <img
                 src="/icons/dashboard.svg"
@@ -25,7 +29,11 @@ const Sidebar = () => {
           <li>
             <NavLink
               to="/all-appointments"
-              className="flex items-center px-4 py-2 hover:bg-gray-200 rounded"
+              className={({ isActive }) =>
+                `flex items-center gap-3 py-3.5 px-3 md:px-6 cursor-pointer ${
+                  isActive ? 'bg-[#F2F3FF] border-r-4 border-blue-700' : ''
+                }`
+              }
             >
               <img
                 src="/icons/appointments.svg"
@@ -38,7 +46,11 @@ const Sidebar = () => {
           <li>
             <NavLink
               to="/add-doctor"
-              className="flex items-center px-4 py-2 hover:bg-gray-200 rounded"
+              className={({ isActive }) =>
+                `flex items-center gap-3 py-3.5 px-3 md:px-6 cursor-pointer ${
+                  isActive ? 'bg-[#F2F3FF] border-r-4 border-blue-700' : ''
+                }`
+              }
             >
               <img
                 src="/icons/add-doctors.svg"
@@ -51,7 +63,11 @@ const Sidebar = () => {
           <li>
             <NavLink
               to="/doctor-list"
-              className="flex items-center px-4 py-2 hover:bg-gray-200 rounded"
+              className={({ isActive }) =>
+                `flex items-center gap-3 py-3.5 px-3 md:px-6 cursor-pointer ${
+                  isActive ? 'bg-[#F2F3FF] border-r-4 border-blue-700' : ''
+                }`
+              }
             >
               <img
                 src="/icons/doctors-list.svg"
