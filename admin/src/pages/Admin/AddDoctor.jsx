@@ -2,9 +2,9 @@ import React from 'react';
 
 const AddDoctor = () => {
   return (
-    <div className="ml-64 pt-16">
-      <form className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
-        <h1 className="text-2xl font-bold text-center mb-6">Add Doctor</h1>
+    <div className="ml-64 pt-16 ">
+      <form className="max-w-4xl mt-20 pt-20 mx-auto p-8 bg-white shadow-lg rounded-lg">
+        <h1 className="text-2xl text-blue-800 font-bold text-center mb-6">Add Doctor</h1>
 
         <div className="flex flex-col items-center mb-6">
           <label htmlFor="doc-img" className="cursor-pointer">
