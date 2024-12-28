@@ -1,32 +1,33 @@
 import jwt from 'jsonwebtoken'
 
 //admin authentication middleware
-
-const authAdmin = async (req,res,next) => {
+const authAdmin = async (req, res, next) => {
     try {
-        //logic to verify the token
-        //we check header if for token
-        //if token is present in header then only user can make further api calls 
-        const {admintoken} = req.headers
-        if(!admintoken){
-            return res.json({success:false,message:"Not Authorized Login Again"})
+        // Extract the token from Authorization header
+        const authHeader = req.headers.authorization;
+
+        // Check if the token is missing
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.json({ success: false, message: "Not Authorized. Login Again" });
         }
 
-        //now incase we have admin token we need to verify it
-        //decode this token
-        const token_decode = jwt.verify(admintoken,process.env.JWT_SECRET)
-        //note decoded token will contain our email id and password
+        // Get the token after "Bearer "
+        const admintoken = authHeader.split(' ')[1];
 
-        if(token_decode !== process.env.ADMIN_EMAIL + process.env.ADMIN_PASSWORD){
-            return res.json({success:false,message:"Not Authorized Login Again"})
+        // Verify and decode the token
+        const token_decode = jwt.verify(admintoken, process.env.JWT_SECRET);
+
+        // Check if the email in token matches the admin email
+        if (token_decode.email !== process.env.ADMIN_EMAIL) {
+            return res.json({ success: false, message: "Not Authorized. Login Again" });
         }
 
-        //if token matches call next()
-        next()
+        // Proceed to the next middleware or route handler
+        next();
     } catch (error) {
-        console.log(error)
-        res.json({success:false,message:error.message})
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
-}
+};
 
-export default authAdmin
+export default authAdmin;
