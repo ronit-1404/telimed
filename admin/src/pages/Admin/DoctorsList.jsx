@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { AdminContext } from '../../context/AdminContext';
 
 const DoctorsList = () => {
-  const { doctors, atoken, getAllDoctors } = useContext(AdminContext);
+  const { doctors, atoken, getAllDoctors, changeavailability } = useContext(AdminContext);
 
   // Fetch doctors when the token is available
   useEffect(() => {
@@ -31,6 +31,7 @@ const DoctorsList = () => {
                 <p className="text-sm text-gray-600">{item.speciality}</p>
                 <div className="flex items-center mt-3">
                   <input
+                    onChange={() => changeavailability(item._id)}
                     type="checkbox"
                     checked={item.available}
                     readOnly

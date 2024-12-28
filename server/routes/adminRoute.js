@@ -2,6 +2,8 @@ import express from 'express'
 import { addDoctor, loginAdmin, allDoctor  } from '../controllers/adminController.js'
 import {upload} from '../middlewares/multer.js'
 import authAdmin from '../middlewares/authAdmin.js'
+import { changeAvailabity } from '../controllers/doctorController.js'
+
 
 const adminRouter = express.Router()
 //now using the above router multiple endpoints can be created
@@ -20,4 +22,5 @@ adminRouter.post('/login',(req,res,next)=>{
 },loginAdmin)
 
 adminRouter.post('/all-doctors',authAdmin,allDoctor)
+adminRouter.post('/change-availability',authAdmin,changeAvailabity)
 export default adminRouter
