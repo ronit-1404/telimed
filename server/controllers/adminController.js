@@ -124,7 +124,7 @@ const loginAdmin = async (req, res) => {
 const allDoctor = async (req,res) => {
     try {
         //select method below excludes the password and gets the rest data
-        const doctors = await doctorModel.find([]).select('-password')
+        const doctors = await doctorModel.find({}).select('-password')
         res.json({success:true,doctors})
     } catch (error) {
         console.log(error)
