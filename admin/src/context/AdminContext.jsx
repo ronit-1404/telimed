@@ -32,21 +32,23 @@ const AdminContextProvider = (props) => {
 
     const changeavailability = async (docid) => {
         try {
-            const {data} = await axios.post(`${backendUrl}/api/admin/change-availability`,
-                {},
-                { headers: { Authorization: `Bearer ${atoken}` } })
+            const { data } = await axios.post(
+                `${backendUrl}/api/admin/change-availability`,
+                { docid },
+                { headers: { Authorization: `Bearer ${atoken}` } }
+            );
 
-                if(data.success){
-                    toast.success(data.message)
-                    //after the check box is updated we need to call getall doctors function again
-                    getAllDoctors()
-                }else{
-                    toast.error(data.message)
-                }
+            if (data.success) {
+                toast.success(data.message);
+                getAllDoctors();
+            } else {
+                toast.error(data.message);
+            }
         } catch (error) {
-            toast.error(error.message)
+            console.error("Error changing availability:", error);
+            toast.error(error.message);
         }
-    }
+    };
 
     const value = {
         atoken,
