@@ -14,7 +14,7 @@ const Header = () => {
           and schedule your appointment hassle-free.
         </p>
         <a 
-          href="#" 
+          href="#speciality" 
           className="inline-flex items-center gap-2 bg-white text-primary font-medium py-2 px-4 rounded-lg shadow hover:bg-gray-100 transition-all hover:scale-105 duration-300">
           Book Appointment 
           <img src="/path/to/arrow-icon.png" alt="arrow icon" className="w-4 h-4" />
