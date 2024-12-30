@@ -12,7 +12,8 @@ import Login from './pages/loginsignup/Login'
 const App = () => {
   return (
     <div className='mx-4 sm:mx-[10%]'>
-    
+
+    <Navbar>
 
       <Routes>
         <Route path='/' element={<Home />}/>
@@ -26,6 +27,7 @@ const App = () => {
         <Route path='/appointment/:docid' element={<Appointment />}/>
       </Routes>
     
+    </Navbar>
       
     </div>
   )
