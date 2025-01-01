@@ -8,10 +8,9 @@ const Navbar = () => {
 
   return (
     <div className="flex items-center justify-between text-sm py-4 px-6 mb-5 border-b border-gray-300 bg-white shadow-md">
-      {/* Logo */}
+     
       <img src="" alt="Logo" className="h-10 cursor-pointer" onClick={() => navigate('/')} />
 
-      {/* Navigation Links */}
       <ul className="hidden md:flex items-center gap-8 font-medium">
         <NavLink to="/" className={({ isActive }) => isActive ? 'text-primary' : 'text-gray-600 hover:text-primary'}>
           <li className="py-1 transition-all">HOME</li>
@@ -24,7 +23,6 @@ const Navbar = () => {
         </NavLink>
       </ul>
 
-      {/* Profile and Auth Buttons */}
       <div className="flex items-center gap-6">
         {token ? (
           <div className="relative group">
