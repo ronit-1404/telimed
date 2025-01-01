@@ -33,7 +33,7 @@ const TopDoctors = () => {
           )
         })}
       </div>
-      <button onClick={() => {navigate('/doctors'); scrollTo(0,0)}} className='bg-blue-200 font-medium text-gray-900 px-12 py-3 rounded-full mt-10'>more</button>
+      <button onClick={() => {navigate('/doctors'); scrollTo(0,0)}} className='bg-blue-200 font-medium text-gray-900 px-12 py-3 rounded-full mt-10 hover:scale-105 duration-300'>more</button>
     </div>
   )
 }
