@@ -2,10 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-.active hr{
-    @apply block
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+/* Global font style */
+* {
+  font-family: 'Outfit', sans-serif;
 }
 
-::-webkit-scrollbar{
-    @apply hidden
+/* Active state hr element */
+.active hr {
+  display: block; /* Tailwind does not have a utility for 'block' directly */
+}
+
+/* Hide scrollbar */
+::-webkit-scrollbar {
+  display: none; /* Use regular CSS to hide the scrollbar */
 }
