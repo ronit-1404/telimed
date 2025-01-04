@@ -43,6 +43,7 @@ const AddDoctor = () => {
         console.log(`${key}: ${value}`);
       }
       console.log(atoken)
+      //here formData is beign passed in request body
       const response = await axios.post(
         `${backendUrl}/api/admin/add-doctor`,
         formData,

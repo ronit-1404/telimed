@@ -12,6 +12,7 @@ const AdminContextProvider = (props) => {
     const getAllDoctors = async () => {
         try {
             console.log("Fetching doctors...");
+            //the second parameter expalains that no parameter is begin sent in body of post request
             const { data } = await axios.post(
                 `${backendUrl}/api/admin/all-doctors`,
                 {},
