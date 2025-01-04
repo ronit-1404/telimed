@@ -7,6 +7,9 @@ const Appointment = () => {
   const { docid } = useParams();
   const { doctors,currencysymbol } = useContext(AppContext);
   const [docinfo, setdocinfo] = useState(null);
+  const [docslots,setdocslots] = useState([])
+  const [slotindex,setslotindex] = useState(0)
+  const [slottime,setslottime] = useState('')
 
   const fetchdocinfo = async () => {
     const docinfo = doctors.find(doc => doc._id === docid);
@@ -14,9 +17,57 @@ const Appointment = () => {
     console.log(docinfo);
   };
 
+  const getAvailableSolts = async () => {
+    setdocslots([]);
+    let today = new Date();
+  
+    for (let i = 0; i < 7; i++) {
+      let currdate = new Date(today);
+      currdate.setDate(today.getDate() + i);
+  
+      let endtime = new Date();
+      endtime.setDate(today.getDate() + i);
+      endtime.setHours(21, 0, 0, 0);
+  
+      if (today.getDate() === currdate.getDate()) {
+        currdate.setHours(currdate.getHours() > 10 ? currdate.getHours() + 1 : 10);
+        currdate.setMinutes(currdate.getMinutes() > 30 ? 30 : 0);
+      } else {
+        currdate.setHours(10);
+        currdate.setMinutes(0);
+      }
+  
+      let timeslots = [];
+  
+      while (currdate < endtime) {
+        let formatedtime = currdate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  
+        timeslots.push({
+          datetime: new Date(currdate),
+          time: formatedtime,
+        });
+  
+        currdate.setMinutes(currdate.getMinutes() + 30);
+      }
+  
+      setdocslots((prev) => [...prev, timeslots]);
+    }
+  };
+  
+
+
   useEffect(() => {
     fetchdocinfo();
   }, [doctors, docid]);
+
+  useEffect(() => {
+    getAvailableSolts()
+  },[docinfo])
+
+  useEffect(() => {
+    console.log(docslots)
+  },[docslots])
+
 
   if (!docinfo) {
     // Show a loading state or fallback content until `docinfo` is loaded
@@ -45,7 +96,7 @@ const Appointment = () => {
             <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{docinfo.about}</p>
           </div>
           <div>
-            <p>Appointment fees: <span>{currencysymbol}{docinfo.fees}</span></p>
+            <p className='text-gray-500 font-medium mt-4'>Appointment fees: <span className='text-gray-600'>{currencysymbol}{docinfo.fees}</span></p>
           </div>
         </div>
       </div>
