@@ -10,6 +10,7 @@ const Appointment = () => {
   const [docinfo, setdocinfo] = useState(null);
   const [docslots, setdocslots] = useState([]);
   const [slotindex, setslotindex] = useState(0);
+  const [selectedSlotTime, setSelectedSlotTime] = useState(null);
 
   const fetchdocinfo = async () => {
     const docinfo = doctors.find(doc => doc._id === docid);
@@ -17,7 +18,7 @@ const Appointment = () => {
     console.log(docinfo);
   };
 
-  const getAvailableSolts = async () => {
+  const getAvailableSlots = async () => {
     setdocslots([]);
     let today = new Date();
 
@@ -28,7 +29,7 @@ const Appointment = () => {
       let endtime = new Date(currdate);
       endtime.setHours(21, 0, 0, 0);
 
-      if (i === 0) { // For the current day
+      if (i === 0) {
         currdate.setHours(Math.max(currdate.getHours() + 1, 10));
         currdate.setMinutes(currdate.getMinutes() > 30 ? 30 : 0);
       } else {
@@ -37,20 +38,17 @@ const Appointment = () => {
       }
 
       let timeslots = [];
-
       while (currdate < endtime) {
-        let formatedtime = currdate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
+        let formattedTime = currdate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         timeslots.push({
           datetime: new Date(currdate),
-          time: formatedtime,
+          time: formattedTime,
         });
-
         currdate.setMinutes(currdate.getMinutes() + 30);
       }
 
       console.log('Generated slots for', currdate.toDateString(), timeslots);
-      setdocslots((prev) => [...prev, timeslots]);
+      setdocslots(prev => [...prev, timeslots]);
     }
   };
 
@@ -60,7 +58,7 @@ const Appointment = () => {
 
   useEffect(() => {
     if (docinfo) {
-      getAvailableSolts();
+      getAvailableSlots();
     }
   }, [docinfo]);
 
@@ -87,8 +85,6 @@ const Appointment = () => {
             <p>{docinfo.degree} - {docinfo.speciality}</p>
             <button className='py-0.5 px-2 text-xs rounded-full'>{docinfo.experience}</button>
           </div>
-
-          {/* Doctor about */}
           <div>
             <p className='flex items-center gap-1 text-sm text-gray-900 mt-3'>About <img src={assets.info_icon} alt="" /></p>
             <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{docinfo.about}</p>
@@ -118,6 +114,26 @@ const Appointment = () => {
             <p>No available slots.</p>
           )}
         </div>
+
+        {/* Time Slot may be removed later */}
+        <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4 '>
+          {docslots[slotindex]?.length > 0 ? (
+            docslots[slotindex].map((item, index) => (
+              <p
+                className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${selectedSlotTime === item.time ? 'bg-primary text-white' : 'text-gray-400 border border-gray-300'}`}
+                key={index}
+                onClick={() => setSelectedSlotTime(item.time)}
+              >
+                {item.time.toLowerCase()}
+              </p>
+            ))
+          ) : (
+            <p>No slots available for the selected day.</p>
+          )}
+        </div>
+
+          <button className='bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6'>Book Appointment</button>
+
       </div>
     </div>
   );
