@@ -13,6 +13,8 @@ import Dashboard from "./pages/Admin/Dashboard";
 import AllAppointments from "./pages/Admin/AllAppointments";
 import AddDoctor from "./pages/Admin/AddDoctor";
 import DoctorsList from "./pages/Admin/DoctorsList";
+import MyAppointments from "../../client/src/pages/MyAppointments";
+import MyProfile from "../../client/src/pages/MyProfile";
 
 const App = () => {
     const [selectedRole, setSelectedRole] = useState("");
@@ -34,6 +36,8 @@ const App = () => {
                     <Route path="/all-appointments" element={<AllAppointments />} />
                     <Route path="/add-doctor" element={<AddDoctor />} />
                     <Route path="/doctor-list" element={<DoctorsList />} />
+                    <Route path="/my-appointments" element={<MyAppointments />} />
+                    <Route path="my-profile" element={<MyProfile />} />
                 </Routes>
             </div>
         </div>
