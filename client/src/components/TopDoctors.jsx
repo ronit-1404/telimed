@@ -5,7 +5,7 @@ import { AppContext } from '../context/AppContext';
 const TopDoctors = () => {
   const navigate = useNavigate();
   const { doctors } = useContext(AppContext);
-
+  console.log(doctors)
   const handleCardClick = (id) => {
     if (id) {
       navigate(`/appointment/${id}`);
