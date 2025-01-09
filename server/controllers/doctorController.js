@@ -16,10 +16,10 @@ const changeAvailabity = async  (req,res) => {
 }
 
 
-const doctorList = async () => {
+const doctorList = async (req,res) => {
     try{
-        const docotrs = await doctorModel.find({}).select(['password','email'])
-        res.json({success:true,docotrs})
+        const doctors = await doctorModel.find({}).select(['password','email'])
+        res.json({success:true,doctors})
     }catch (error){
         console.log(error)
         res.json({success:false,message:error.message})
