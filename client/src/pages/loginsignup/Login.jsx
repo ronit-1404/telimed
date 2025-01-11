@@ -7,11 +7,12 @@ import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 
 function Login() {
   const [signIn, toggle] = useState(true); // State to toggle between sign-in and sign-up forms
+  const [name,setName] = useState("");
   const [email, setEmail] = useState(""); // State for email input
   const [password, setPassword] = useState(""); // State for password input
   const { backendUrl, token, setToken } = useContext(AppContext); // Context for backend URL and token management
 
-  const onSubmitHandler = async (event) => {
+  const onSubmitloginHandler = async (event) => {
     event.preventDefault(); // Prevent default form submission behavior
 
     try {
@@ -34,23 +35,43 @@ function Login() {
     }
   };
 
+  const onSubmitRegisterHandler = async (event) => {
+    event.preventDefault();
+    
+    try {
+        const { data } = await axios.post(`${backendUrl}/api/user/register`, {name,email,password});
+        if(data.success){
+            localStorage.setItem("aToken",data.token);
+            setToken(data.token);
+            toast.success("Restration Successfull!");
+        }else{
+            toast.error(data.message || "Invalid credentials")
+        }
+    } catch (error) {
+        console.error("Error logging in:", error.response?.data || error.message); // Log error details
+      toast.error(
+        error.response?.data?.message || "An error occurred during login. Please try again."
+      ); 
+    }
+  }
+
   return (
     <Logincontext.PageWrapper>
       <Logincontext.Container>
         {/* Sign-Up Form */}
         <Logincontext.SignUpContainer signinIn={signIn}>
-          <Logincontext.Form>
+          <Logincontext.Form onSubmit={onSubmitRegisterHandler}>
             <Logincontext.Title>Create Account</Logincontext.Title>
-            <Logincontext.Input type="text" placeholder="Name" />
-            <Logincontext.Input type="email" placeholder="Email" />
-            <Logincontext.Input type="password" placeholder="Password" />
+            <Logincontext.Input onChange={(e) => setName(e.target.value)} type="text" placeholder="Name" />
+            <Logincontext.Input onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email" />
+            <Logincontext.Input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
             <Logincontext.Button>Sign Up</Logincontext.Button>
           </Logincontext.Form>
         </Logincontext.SignUpContainer>
 
         {/* Sign-In Form */}
         <Logincontext.SignInContainer signinIn={signIn}>
-          <Logincontext.Form onSubmit={onSubmitHandler}>
+          <Logincontext.Form onSubmit={onSubmitloginHandler}>
             <Logincontext.Title>Sign in</Logincontext.Title>
             <Logincontext.Input
               onChange={(e) => setEmail(e.target.value)}
