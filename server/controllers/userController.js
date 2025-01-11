@@ -44,4 +44,28 @@ const registerUser = async (req,res) => {
     }
 }
 
-export {registerUser}
+const loginUser = async (req,res) => {
+    try {
+        const{email,password} = req.body
+        const user = await userModel.findOne({email})
+
+        if(!user){
+           return res.json({success:false,message:'user do not exist pls register first'})
+        }
+
+        const ismatch = await bycrypt.compare(password,user.password)
+
+        if(ismatch){
+            const token = jwt.sign({id:user._id},process.env.JWT_SECRET)
+            res.json({success:true,token})
+        }else{
+            //note we are wraping response in {} braces because we want to send it as an object
+            res.json({success:false,message:"Invalid login or password"})
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({success:false,message:error.message})
+    }
+}
+
+export {registerUser,loginUser}
