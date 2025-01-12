@@ -1,9 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios"; // Import axios for API calls
 import * as Logincontext from "./LoginContext";
 import { AppContext } from "../../context/AppContext";
 import { toast, ToastContainer } from "react-toastify"; // Import Toastify for notifications
 import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [signIn, toggle] = useState(true); // State to toggle between sign-in and sign-up forms
@@ -11,7 +12,7 @@ function Login() {
   const [email, setEmail] = useState(""); // State for email input
   const [password, setPassword] = useState(""); // State for password input
   const { backendUrl, token, setToken } = useContext(AppContext); // Context for backend URL and token management
-
+  const navigate = useNavigate()
   const onSubmitloginHandler = async (event) => {
     event.preventDefault(); // Prevent default form submission behavior
 
@@ -54,6 +55,13 @@ function Login() {
       ); 
     }
   }
+
+  useEffect(() => {
+    if(token){
+      navigate('/')
+    }
+  })
+
 
   return (
     <Logincontext.PageWrapper>
