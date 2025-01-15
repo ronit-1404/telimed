@@ -1,33 +1,39 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AppContext } from "../context/AppContext";
 
 const MyProfile = () => {
-  const [userData, setUserData] = useState({
-    name: "Ronit Dhase",
-    image: "",
-    email: "ronit@gmail.com",
-    phone: "+91 9373669434",
-    address: {
-      line1: "Delhi",
-      line2: "India",
-    },
-    gender: "Male",
-    dob: "2004-01-10",
-  });
+  const { userData, setUserData } = useContext(AppContext);
 
   const [isEdit, setIsEdit] = useState(true);
+
+  // Ensure default structure for userData
+  const defaultUserData = {
+    name: "",
+    email: "",
+    phone: "",
+    address: {
+      line1: "",
+      line2: "",
+    },
+    gender: "",
+    dob: "",
+    image: "",
+  };
+
+  const currentUserData = { ...defaultUserData, ...userData };
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
       {/* Profile Header */}
       <div className="flex items-center space-x-4 mb-6">
         <img
-          src={userData.image || "https://via.placeholder.com/150"}
+          src={currentUserData.image || "https://via.placeholder.com/150"}
           alt="Profile"
           className="w-24 h-24 rounded-full border-2 border-gray-300"
         />
         {isEdit ? (
           <input
-            value={userData.name}
+            value={currentUserData.name}
             type="text"
             className="text-2xl font-semibold border-b-2 border-gray-300 focus:outline-none"
             onChange={(e) =>
@@ -35,7 +41,7 @@ const MyProfile = () => {
             }
           />
         ) : (
-          <p className="text-2xl font-semibold">{userData.name}</p>
+          <p className="text-2xl font-semibold">{currentUserData.name}</p>
         )}
       </div>
 
@@ -47,21 +53,21 @@ const MyProfile = () => {
         <div className="space-y-2">
           <div>
             <p className="font-medium text-gray-600">Email:</p>
-            <p className="text-gray-800">{userData.email}</p>
+            <p className="text-gray-800">{currentUserData.email}</p>
           </div>
           <div>
             <p className="font-medium text-gray-600">Phone:</p>
             {isEdit ? (
               <input
                 type="text"
-                value={userData.phone}
+                value={currentUserData.phone}
                 className="w-full border-b-2 border-gray-300 focus:outline-none"
                 onChange={(e) =>
                   setUserData((prev) => ({ ...prev, phone: e.target.value }))
                 }
               />
             ) : (
-              <p className="text-gray-800">{userData.phone}</p>
+              <p className="text-gray-800">{currentUserData.phone}</p>
             )}
           </div>
           <div>
@@ -70,7 +76,7 @@ const MyProfile = () => {
               <div className="space-y-2">
                 <input
                   type="text"
-                  value={userData.address.line1}
+                  value={currentUserData.address.line1}
                   className="w-full border-b-2 border-gray-300 focus:outline-none"
                   onChange={(e) =>
                     setUserData((prev) => ({
@@ -81,7 +87,7 @@ const MyProfile = () => {
                 />
                 <input
                   type="text"
-                  value={userData.address.line2}
+                  value={currentUserData.address.line2}
                   className="w-full border-b-2 border-gray-300 focus:outline-none"
                   onChange={(e) =>
                     setUserData((prev) => ({
@@ -93,9 +99,9 @@ const MyProfile = () => {
               </div>
             ) : (
               <p className="text-gray-800">
-                {userData.address.line1}
+                {currentUserData.address.line1}
                 <br />
-                {userData.address.line2}
+                {currentUserData.address.line2}
               </p>
             )}
           </div>
@@ -110,7 +116,7 @@ const MyProfile = () => {
             <p className="font-medium text-gray-600">Gender:</p>
             {isEdit ? (
               <select
-                value={userData.gender}
+                value={currentUserData.gender}
                 className="w-full border-b-2 border-gray-300 focus:outline-none"
                 onChange={(e) =>
                   setUserData((prev) => ({ ...prev, gender: e.target.value }))
@@ -120,7 +126,7 @@ const MyProfile = () => {
                 <option value="Female">Female</option>
               </select>
             ) : (
-              <p className="text-gray-800">{userData.gender}</p>
+              <p className="text-gray-800">{currentUserData.gender}</p>
             )}
           </div>
           <div>
@@ -128,14 +134,14 @@ const MyProfile = () => {
             {isEdit ? (
               <input
                 type="date"
-                value={userData.dob}
+                value={currentUserData.dob}
                 className="w-full border-b-2 border-gray-300 focus:outline-none"
                 onChange={(e) =>
                   setUserData((prev) => ({ ...prev, dob: e.target.value }))
                 }
               />
             ) : (
-              <p className="text-gray-800">{userData.dob}</p>
+              <p className="text-gray-800">{currentUserData.dob}</p>
             )}
           </div>
         </div>
