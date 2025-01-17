@@ -1,11 +1,42 @@
 import React, { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
-
+import { assets } from "../assets/assets_frontend/assets";
+import { Form } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
 const MyProfile = () => {
-  const { userData, setUserData } = useContext(AppContext);
+  const { userData, setUserData, token,backendUrl,loadUserProfileData } = useContext(AppContext);
 
   const [isEdit, setIsEdit] = useState(true);
+  const [image,setImage] = useState(false);
+  
+  //update profile and save changes in database
+  const updateuserprofiledata = async () => {
+    try {
+      const formdata = new FormData()
+      formdata.append('name',userData.name)
+      formdata.append('phone',userData.phone)
+      formdata.append('address',JSON.stringify(userData.address))
+      formdata.append('gender',userData.gender)
+      formdata.append('dob',userData.dob)
 
+      image && formdata.append('image',image)
+
+      const {data} = await axios.post(`${backendUrl}/api/user/update-profile`,formdata,{headers:{token}})
+
+      if(data.success){
+        toast.success(data.message)
+        await loadUserProfileData()
+        setIsEdit(false)
+        setImage(false)
+      }else{
+        toast.error(data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error)
+    }
+  }
   // Ensure default structure for userData
   const defaultUserData = {
     name: "",
@@ -26,11 +57,22 @@ const MyProfile = () => {
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
       {/* Profile Header */}
       <div className="flex items-center space-x-4 mb-6">
+        {
+      isEdit
+        ?<label htmlFor="image">
+          <div className="inline-block relative cursor-pointer">
+            <img className="w-36 rounded backdrop-opacity-75" src={image ? URL.createObjectURL(image):userData.image} alt="" />
+            <img className="w-10 absolute bottom-12 right-12" src={image ? "":assets.upload_icon} alt="" />
+          </div>
+          <input onClick={(e) => setImage(e.target.files[0])} type="file" id="image" hidden/>
+        </label>
+        :
         <img
           src={currentUserData.image || "https://via.placeholder.com/150"}
           alt="Profile"
           className="w-24 h-24 rounded-full border-2 border-gray-300"
         />
+      }
         {isEdit ? (
           <input
             value={currentUserData.name}
@@ -152,7 +194,7 @@ const MyProfile = () => {
         {isEdit ? (
           <button
             className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
-            onClick={() => setIsEdit(false)}
+            onClick={updateuserprofiledata}
           >
             Save Information
           </button>
