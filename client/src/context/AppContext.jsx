@@ -12,7 +12,7 @@ const AppContextProvider = (props) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [doctors,setDoctors] = useState();
 
-    const initialToken = localStorage.getItem('token') || false;
+   // const initialToken = localStorage.getItem('token') || false;
     const [token, setToken] = useState(localStorage.getItem("aToken") || "");
     const [userData,setUserData] = useState(false)
 
