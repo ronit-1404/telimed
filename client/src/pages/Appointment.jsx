@@ -44,10 +44,22 @@ const Appointment = () => {
       let timeslots = [];
       while (currdate < endtime) {
         let formattedTime = currdate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        timeslots.push({
-          datetime: new Date(currdate),
-          time: formattedTime,
-        });
+
+        let day = currdate.getDate();
+        let month = currdate.getMonth();
+        let year = currdate().getFullYear()
+
+        const slotDate = day + "_" + month + "_" + year;
+        const slotTime = formattedTime
+
+        const isSlotAvailable = docinfo.slots_booked[slotDate] && docinfo.slots_booked[slotDate].includes(slotTime) ? false : true;
+
+        if(isSlotAvailable){
+          timeslots.push({
+            datetime: new Date(currdate),
+            time: formattedTime,
+          });
+        }
         currdate.setMinutes(currdate.getMinutes() + 30);
       }
 
