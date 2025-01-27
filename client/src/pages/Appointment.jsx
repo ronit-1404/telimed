@@ -47,7 +47,7 @@ const Appointment = () => {
 
         let day = currdate.getDate();
         let month = currdate.getMonth();
-        let year = currdate().getFullYear()
+        let year = currdate.getFullYear()
 
         const slotDate = day + "_" + month + "_" + year;
         const slotTime = formattedTime
