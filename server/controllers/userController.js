@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 import {v2 as cloudinary} from 'cloudinary'
 import doctorModel from '../models/doctormodel.js'
 import appointmentModel from '../models/appointmenModel.js'
+import razorpay from 'razorpay'
 //api to register user
 const registerUser = async (req,res) => {
     try {
@@ -214,4 +215,51 @@ const cancelAppointment = async (req,res) => {
     }
 }
 
+// const razorpayinstance = new razorpay({
+//     key_id:'',
+//     key_secret:''
+// })
+//api to make payment of appointment using razorpay
+// const paymentRazorpay = async (req,res) => {
+//     try {
+//         const {appointmentId} = req.body
+//     const appointmentData = await appointmentModel.findById(appointmentId)
+
+//     if(!appointmentData || appointmentData.cancelled){
+//         return res.json({success:false,message:"appointment cancelled or not found"})
+//     }
+//     //creating options for razorpay payment
+
+//     const options = {
+//         amount: appointmentData.amount *100,
+//         currency: process.env.CURRENCY,
+//         receipt: appointmentId,
+//     }
+
+//     //creation of an order 
+//     const order = await razorpayinstance.orders.create(options)
+//     res.json({success:true,order})
+//     } catch (error) {
+//         console.log(error);
+//         res.json({success:false,message:error.message})
+//     }
+// }
+
+//api to verify payment of razorpay
+// const verifyRazorpay = async (req,res) => {
+//     try {
+//         const {razorpay_order_id} = req.body
+//         const orderinfo = await razorpayinstance.orders.fetch(razorpay_order_id)
+//         console.log(orderinfo);
+//         if(orderinfo.status === 'paid'){
+//             await appointmentModel.findByIdAndUpdate(orderinfo.receipt,{payment:true})
+//             res.json({success:true,message:'payment Successful'})
+//         }else{
+//             res.json({success:false,message:'payment failed'})
+//         }
+//     } catch (error) {
+//         console.log(error);
+//         res.json({success:false,message:error.message})
+//     }
+//}
 export {registerUser,loginUser, getProfile,updateProfile,bookAppointment,listAppointment,cancelAppointment}
